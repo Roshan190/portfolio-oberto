@@ -1,0 +1,31 @@
+# Roshan Shikhare — portfolio
+
+Senior Software Engineer in Mumbai, India.
+Headline: Senior Frontend / Fullstack Engineer | React, Next.js, Node.js | Enterprise & Product Web Applications.
+
+Site: https://roshan190.github.io/portfolio-oberto
+GitHub: https://github.com/Roshan190
+LinkedIn: https://www.linkedin.com/in/roshan-shikhare-83320820a
+
+No email address, phone number, or resume is published.
+
+## Experience
+
+- Bajaj Finserv — Senior Software Engineer — IT, MarTech & GenAI, Technology — Apr 2026–present.
+- DEPT® Agency, Mumbai — Senior Software Engineer — Aug 2023–Apr 2026. React, Next.js, Angular, AEM. Clients: IFB, India First Life Insurance, Palfinger.
+- Tekno Point, Mumbai — Software Engineer — Jul 2021–Jul 2023.
+
+## Projects
+
+- HealthShield (featured): solo-built mobile-first personal health and insurance companion for India. https://health-shield.in. Source-available, all rights reserved, not open source.
+- Form Ninja: open-source npm form library, MIT. https://github.com/Roshan190/form-ninja
+- Client work: IFB, India First Life Insurance, Palfinger (via DEPT®), MumbaiFilter (freelance).
+
+## Education
+
+B.Sc. Computer Science, Mumbai University, 2018–2021.
+The Complete 2024 Web Development Bootcamp, Udemy (2021).
+
+## Design credit
+
+Adapted from Juan Oberto’s MIT-licensed portfolio: https://github.com/juandgg1611/Portfolio
