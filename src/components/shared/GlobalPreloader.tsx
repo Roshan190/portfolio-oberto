@@ -93,7 +93,7 @@ export default function GlobalPreloader() {
           ))}
         </h1>
         <div className="preloader-line w-64 sm:w-80 md:w-[450px] h-[1px] bg-border-subtle origin-left scale-x-0" />
-        <div className="mt-8 font-mono text-warm text-sm tracking-widest">
+        <div className="mt-8 font-mono text-cream text-sm tracking-widest">
           {String(progress).padStart(2, '0')}%
         </div>
       </div>

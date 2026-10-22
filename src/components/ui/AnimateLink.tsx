@@ -6,6 +6,18 @@ interface AnimatedLinkProps {
   className?: string;
 }
 
+/** Text-only copy so the hover duplicate is not a second tab stop. */
+function visualCopy(node: React.ReactNode): React.ReactNode {
+  if (node == null || typeof node === 'boolean') return null;
+  if (typeof node === 'string' || typeof node === 'number') return node;
+  if (Array.isArray(node)) return node.map((child) => visualCopy(child));
+  if (React.isValidElement(node)) {
+    const props = node.props as { children?: React.ReactNode };
+    return visualCopy(props.children);
+  }
+  return null;
+}
+
 const AnimatedLink: React.FC<AnimatedLinkProps> = ({ children, onClick, className = '' }) => {
   if (React.isValidElement(children) && children.type === 'a') {
     const { href, children: text, onClick: childOnClick, target, rel, className: childClassName, ...rest } = children.props as any;
@@ -32,7 +44,7 @@ const AnimatedLink: React.FC<AnimatedLinkProps> = ({ children, onClick, classNam
             className="block absolute top-full left-0 transition-transform duration-500 ease-in-out group-hover:-translate-y-full pointer-events-none"
             style={{ height: '100%', display: 'flex', alignItems: 'center' }}
           >
-            {text}
+            {visualCopy(text)}
           </span>
         </a>
       </li>
@@ -57,7 +69,7 @@ const AnimatedLink: React.FC<AnimatedLinkProps> = ({ children, onClick, classNam
           className="block absolute top-full left-0 transition-transform duration-500 ease-in-out group-hover:-translate-y-full pointer-events-none"
           style={{ height: '100%', display: 'flex', alignItems: 'center' }}
         >
-          {children}
+          {visualCopy(children)}
         </span>
       </span>
     </li>

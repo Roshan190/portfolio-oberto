@@ -87,7 +87,7 @@ const Footer = () => {
           {/* Links Grid */}
           <div className="flex-1 w-full grid grid-cols-2 gap-8 md:gap-16">
             <div>
-              <h3 className="text-warm/40 font-mono text-xs uppercase tracking-[0.2em] font-bold mb-6">
+              <h3 className="text-ink/75 font-mono text-xs uppercase tracking-[0.2em] font-bold mb-6">
                 Explore
               </h3>
               <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 sm:gap-x-8 gap-y-4 text-warm text-sm sm:text-base font-sans font-semibold tracking-wide">
@@ -117,7 +117,7 @@ const Footer = () => {
             </div>
 
             <div>
-              <h3 className="text-warm/40 font-mono text-xs uppercase tracking-[0.2em] font-bold mb-6">
+              <h3 className="text-ink/75 font-mono text-xs uppercase tracking-[0.2em] font-bold mb-6">
                 Connect
               </h3>
               <ul className="flex flex-col gap-4 text-warm text-sm sm:text-base font-sans font-semibold tracking-wide">
@@ -146,13 +146,13 @@ const Footer = () => {
 
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-warm/10 flex flex-col-reverse md:flex-row justify-between items-center gap-6">
-          <p className="text-warm/50 font-sans text-xs sm:text-sm uppercase tracking-widest font-medium text-center md:text-left">
+          <p className="text-ink/75 font-sans text-xs sm:text-sm uppercase tracking-widest font-medium text-center md:text-left">
             © {new Date().getFullYear()} Roshan Shikhare. Design adapted from Juan Oberto’s MIT-licensed portfolio.
           </p>
           
           <button
             onClick={scrollToTop}
-            className="group flex items-center gap-3 px-6 py-3 rounded-full bg-warm/5 border border-warm/10 text-warm hover:text-forest hover:border-forest/30 hover:bg-forest/5 transition-all duration-300 focus:outline-none"
+            className="group flex items-center gap-3 px-6 py-3 rounded-full bg-warm/5 border border-ink/15 text-ink hover:text-forest hover:border-forest/30 hover:bg-forest/5 transition-all duration-300 focus:outline-none"
             aria-label="Back to top"
           >
             <span className="font-mono text-xs uppercase tracking-widest font-bold">Back to top</span>

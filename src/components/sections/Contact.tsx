@@ -101,7 +101,7 @@ function ContactCard({
         <p className="text-white/60 font-sans text-sm leading-relaxed mt-2">{description}</p>
       </div>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-auto">
-        <span className="text-white/40 font-mono text-[10px] uppercase tracking-widest">{meta}</span>
+        <span className="text-white/75 font-mono text-[10px] uppercase tracking-widest">{meta}</span>
         <span
           className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full font-mono font-bold text-xs uppercase tracking-widest"
           style={{ background: accent, color: '#080807' }}

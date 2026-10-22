@@ -54,7 +54,7 @@ export default function Featured() {
           </div>
 
           <div className="rounded-[2rem] border border-white/10 bg-white/[0.02] p-6 sm:p-8">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-warm mb-5">On the product</p>
+            <p className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-5">On the product</p>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
               {features.map((feature) => (
                 <li key={feature} className="flex items-center gap-3 text-light font-sans text-base sm:text-lg">

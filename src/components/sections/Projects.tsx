@@ -328,7 +328,7 @@ function MobileSnapProjects({ projects, router }: MobileSnapProjectsProps) {
                 <div className="flex items-center justify-between">
                   <span
                     className="font-mono text-[11px] uppercase tracking-widest"
-                    style={{ color: 'rgba(255,255,255,0.45)' }}
+                    style={{ color: 'rgba(255,255,255,0.85)' }}
                   >
                     View project
                   </span>
@@ -522,7 +522,7 @@ export default function ProjectsPage() {
                   ))}
                 </div>
 
-                <div className="font-mono text-base text-gray-soft mt-4">{project.year}</div>
+                <div className="font-mono text-base text-ink/75 mt-4">{project.year}</div>
               </div>
 
               <div className="flex-[0_0_240px] text-right flex flex-col justify-end items-end pb-4">
@@ -541,7 +541,7 @@ export default function ProjectsPage() {
 
         {/* ── Email row ── */}
         <div className="flex items-center justify-between border-t border-border pt-8 pb-4 mt-2">
-          <span className="font-mono text-sm uppercase tracking-widest text-gray-soft">Featured</span>
+          <span className="font-mono text-sm uppercase tracking-widest text-ink/75">Featured</span>
           <a
             href="https://health-shield.in"
             target="_blank"
@@ -705,7 +705,7 @@ export default function ProjectsPage() {
 
       {/* ── Email row (mobile) ── */}
       <div className="flex flex-col gap-2 px-6 py-8 border-t border-border md:hidden">
-        <span className="font-mono text-xs uppercase tracking-widest text-gray-soft">Featured</span>
+        <span className="font-mono text-xs uppercase tracking-widest text-ink/75">Featured</span>
         <a
           href="https://health-shield.in"
           target="_blank"

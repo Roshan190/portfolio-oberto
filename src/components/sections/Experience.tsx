@@ -156,12 +156,12 @@ const Experience = () => {
           <div>
             <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-neon mb-3">Education</h3>
             <p className="text-light font-sans text-lg">B.Sc. Computer Science, Mumbai University</p>
-            <p className="text-warm/70 font-mono text-sm uppercase tracking-widest mt-1">2018 — 2021</p>
+            <p className="text-muted font-mono text-sm uppercase tracking-widest mt-1">2018 — 2021</p>
           </div>
           <div>
             <h3 className="font-mono text-xs uppercase tracking-[0.2em] text-neon mb-3">Certificate</h3>
             <p className="text-light font-sans text-lg">The Complete 2024 Web Development Bootcamp, Udemy</p>
-            <p className="text-warm/70 font-mono text-sm uppercase tracking-widest mt-1">2021</p>
+            <p className="text-muted font-mono text-sm uppercase tracking-widest mt-1">2021</p>
           </div>
         </div>
       </div>
