@@ -7,63 +7,81 @@
 
 import { gsap } from '@/lib/gsap';
 import { useEffect, useRef } from 'react';
+import dynamic from 'next/dynamic';
 import HomeBanner from '@/components/sections/HomeBanner';
-import Projects from '@/components/sections/Projects';
-import About from '@/components/sections/About';
-import MarqueeStrip from '@/components/sections/MarqueeStrip';
-import Contact from '@/components/sections/Contact';
-import Footer from '@/components/shared/Footer';
 import Navbar from '@/components/shared/Navbar';
-import Featured from '@/components/sections/Featured';
 import { prefersReducedMotion } from '@/lib/site';
+
+const About = dynamic(() => import('@/components/sections/About'));
+const Projects = dynamic(() => import('@/components/sections/Projects'));
+const Featured = dynamic(() => import('@/components/sections/Featured'));
+const MarqueeStrip = dynamic(() => import('@/components/sections/MarqueeStrip'));
+const Contact = dynamic(() => import('@/components/sections/Contact'));
+const Footer = dynamic(() => import('@/components/shared/Footer'));
 export default function Home() {
   const homeRef = useRef<HTMLDivElement>(null);
   const reuniteRef = useRef<HTMLDivElement>(null);
   const techStackRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
-    const home = homeRef.current;
-    const reunite = reuniteRef.current;
-    const techStack = techStackRef.current;
-    const projects = document.querySelector('section');
-    if (!home || !reunite || !techStack || !projects) return;
+    let ctx: { revert: () => void } | undefined;
+    let idleId = 0;
+    let timerId = 0;
 
-    const ctx = gsap.context(() => {
-      if (prefersReducedMotion()) return;
+    const run = () => {
+      const home = homeRef.current;
+      const reunite = reuniteRef.current;
+      const techStack = techStackRef.current;
+      const projects = document.querySelector('section');
+      if (!home || !reunite || !techStack || !projects) return;
 
-      gsap.set(reunite, {
-        zIndex: 2,
-      });
-      gsap.set(home, {
-        zIndex: 1,
-        y: 0,
-        opacity: 1,
-        pointerEvents: 'auto',
-      });
-      gsap
-        .timeline({
-          scrollTrigger: {
-            trigger: reunite,
-            start: 'top bottom',
-            end: 'top 10%',
-            scrub: 1.2,
-            onLeave: () => {
-              home.style.pointerEvents = 'none';
-            },
-            onEnterBack: () => {
-              home.style.pointerEvents = 'auto';
-            },
-          },
-        })
-        .to(home, {
-          opacity: 0,
-          y: 50,
-          scale: 0.95,
-          pointerEvents: 'none',
-          ease: 'power2.out',
+      ctx = gsap.context(() => {
+        if (prefersReducedMotion()) return;
+
+        gsap.set(reunite, {
+          zIndex: 2,
         });
-    });
+        gsap.set(home, {
+          zIndex: 1,
+          y: 0,
+          opacity: 1,
+          pointerEvents: 'auto',
+        });
+        gsap
+          .timeline({
+            scrollTrigger: {
+              trigger: reunite,
+              start: 'top bottom',
+              end: 'top 10%',
+              scrub: 1.2,
+              onLeave: () => {
+                home.style.pointerEvents = 'none';
+              },
+              onEnterBack: () => {
+                home.style.pointerEvents = 'auto';
+              },
+            },
+          })
+          .to(home, {
+            opacity: 0,
+            y: 50,
+            scale: 0.95,
+            pointerEvents: 'none',
+            ease: 'power2.out',
+          });
+      });
+    };
 
-    return () => ctx.revert();
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(run, { timeout: 1500 });
+    } else {
+      timerId = window.setTimeout(run, 200);
+    }
+
+    return () => {
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timerId) window.clearTimeout(timerId);
+      ctx?.revert();
+    };
   }, []);
   return (
     <>

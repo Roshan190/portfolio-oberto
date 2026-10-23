@@ -8,7 +8,6 @@ import { useRouter } from 'next/navigation';
 import AnimatedHeading from '@/components/ui/AnimateHeading';
 import { getAllProjects } from '@/lib/projects';
 import { Project } from '@/lib/projects';
-import { assetPath } from '@/lib/site';
 
 /* ─────────────────────────────────────────────
    DESKTOP: Hover-preview cursor hook
@@ -268,8 +267,8 @@ function MobileSnapProjects({ projects, router }: MobileSnapProjectsProps) {
                   src={project.hoverImage || project.images[0]}
                   alt={project.title}
                   fill
-                  sizes="(max-width: 767px) calc(100vw - 32px)"
-                  priority={index < 2}
+                  sizes="(max-width: 767px) 280px, 40vw"
+                  loading="lazy"
                   className="mc-img object-cover object-top"
                 />
                 <div
@@ -370,13 +369,6 @@ export default function ProjectsPage() {
 
   const { setFloatingRef, setInnerRef, setImageContainerRef, show, hide, isHovering } =
     useHoverPreview(containerRef, handleScrollLeave);
-
-  useEffect(() => {
-    getAllProjects().slice(0, 4).forEach((project) => {
-      const img = new window.Image();
-      img.src = assetPath(project.hoverImage || project.images[0]);
-    });
-  }, []);
 
   useGSAP(
     () => {
@@ -623,7 +615,7 @@ export default function ProjectsPage() {
                             alt={project.title}
                             fill
                             sizes="160px"
-                            priority
+                            loading="lazy"
                             className="object-cover object-top"
                           />
                         </div>
@@ -686,7 +678,7 @@ export default function ProjectsPage() {
                         alt={project.title}
                         fill
                         sizes="500px"
-                        priority
+                        loading="lazy"
                         className="object-cover object-top"
                       />
                     </div>

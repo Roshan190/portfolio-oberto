@@ -15,8 +15,10 @@ export default function HeroChartBackground() {
     let width = 0;
     let height = 0;
     let dpr = 1;
-    let animationFrameId: number;
+    let animationFrameId = 0;
     let time = 0;
+    let running = false;
+    let loopOn = false;
 
     const resize = () => {
       if (!containerRef.current) return;
@@ -103,12 +105,40 @@ export default function HeroChartBackground() {
         ctx.stroke();
       }
 
+      if (running) animationFrameId = requestAnimationFrame(animate);
+    };
+
+    // One still frame now; the loop starts once the browser is idle.
+    animate();
+
+    const start = () => {
+      if (loopOn) return;
+      loopOn = true;
+      running = true;
       animationFrameId = requestAnimationFrame(animate);
     };
 
-    animate();
+    let idleId = 0;
+    let timerId = 0;
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(start, { timeout: 1500 });
+    } else {
+      timerId = window.setTimeout(start, 400);
+    }
+
+    const observer = new IntersectionObserver(([entry]) => {
+      running = entry.isIntersecting && loopOn;
+      if (running) {
+        cancelAnimationFrame(animationFrameId);
+        animationFrameId = requestAnimationFrame(animate);
+      }
+    });
+    if (containerRef.current) observer.observe(containerRef.current);
 
     return () => {
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timerId) window.clearTimeout(timerId);
+      observer.disconnect();
       window.removeEventListener('resize', resize);
       cancelAnimationFrame(animationFrameId);
     };

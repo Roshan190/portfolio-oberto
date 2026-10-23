@@ -26,41 +26,59 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
   const aliveRef = useRef(false);
 
   useEffect(() => {
-    const reduced = prefersReducedMotion();
-    const lenis = new Lenis({
-      autoRaf: false,
-      smoothWheel: false,
-      syncTouch: false,
-      anchors: false,
-      lerp: 1,
-      duration: reduced ? 0 : 0,
-      overscroll: true,
-    });
-
-    lenisRef.current = lenis;
-    window.__lenis = lenis;
-    aliveRef.current = true;
-
-    lenis.on('scroll', ScrollTrigger.update);
+    let lenis: Lenis | null = null;
+    let refreshTimer = 0;
+    let idleId = 0;
+    let timerId = 0;
+    let cancelled = false;
 
     const onRaf = (time: number) => {
-      if (!aliveRef.current) return;
+      if (!aliveRef.current || !lenis) return;
       lenis.raf(time * 1000);
     };
 
-    gsap.ticker.add(onRaf);
-    gsap.ticker.lagSmoothing(0);
+    const start = () => {
+      if (cancelled || aliveRef.current) return;
+      const reduced = prefersReducedMotion();
+      lenis = new Lenis({
+        autoRaf: false,
+        smoothWheel: false,
+        syncTouch: false,
+        anchors: false,
+        lerp: 1,
+        duration: reduced ? 0 : 0,
+        overscroll: true,
+      });
 
-    const refreshTimer = setTimeout(() => {
-      if (aliveRef.current) ScrollTrigger.refresh();
-    }, 400);
+      lenisRef.current = lenis;
+      window.__lenis = lenis;
+      aliveRef.current = true;
+
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(onRaf);
+      gsap.ticker.lagSmoothing(0);
+
+      refreshTimer = window.setTimeout(() => {
+        if (aliveRef.current) ScrollTrigger.refresh();
+      }, 400);
+    };
+
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(start, { timeout: 1200 });
+    } else {
+      timerId = window.setTimeout(start, 1);
+    }
 
     return () => {
+      cancelled = true;
+      if (idleId) window.cancelIdleCallback(idleId);
+      if (timerId) window.clearTimeout(timerId);
       aliveRef.current = false;
       gsap.ticker.remove(onRaf);
       delete window.__lenis;
-      lenis.destroy();
-      clearTimeout(refreshTimer);
+      lenis?.destroy();
+      lenisRef.current = null;
+      if (refreshTimer) window.clearTimeout(refreshTimer);
     };
   }, []);
 

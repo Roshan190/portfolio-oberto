@@ -13,7 +13,7 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: '--font-geist-mono',
   subsets: ['latin'],
-  preload: true,
+  preload: false,
   display: 'swap',
 });
 const spaceGrotesk = Space_Grotesk({
