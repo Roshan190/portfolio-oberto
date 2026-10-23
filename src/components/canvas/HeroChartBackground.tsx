@@ -118,8 +118,13 @@ export default function HeroChartBackground() {
       animationFrameId = requestAnimationFrame(animate);
     };
 
+    let idleId = 0;
     let timerId = 0;
-    timerId = window.setTimeout(start, 300);
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(start, { timeout: 1500 });
+    } else {
+      timerId = window.setTimeout(start, 400);
+    }
 
     const observer = new IntersectionObserver(([entry]) => {
       running = entry.isIntersecting && loopOn;
@@ -131,6 +136,7 @@ export default function HeroChartBackground() {
     if (containerRef.current) observer.observe(containerRef.current);
 
     return () => {
+      if (idleId) window.cancelIdleCallback(idleId);
       if (timerId) window.clearTimeout(timerId);
       observer.disconnect();
       window.removeEventListener('resize', resize);

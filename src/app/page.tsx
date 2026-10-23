@@ -22,6 +22,7 @@ export default function Home() {
   const techStackRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     let ctx: { revert: () => void } | undefined;
+    let idleId = 0;
     let timerId = 0;
 
     const run = () => {
@@ -68,9 +69,14 @@ export default function Home() {
       });
     };
 
-    timerId = window.setTimeout(run, 7000);
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(run, { timeout: 1500 });
+    } else {
+      timerId = window.setTimeout(run, 200);
+    }
 
     return () => {
+      if (idleId) window.cancelIdleCallback(idleId);
       if (timerId) window.clearTimeout(timerId);
       ctx?.revert();
     };

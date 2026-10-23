@@ -28,6 +28,7 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
   useEffect(() => {
     let lenis: Lenis | null = null;
     let refreshTimer = 0;
+    let idleId = 0;
     let timerId = 0;
     let cancelled = false;
 
@@ -62,11 +63,15 @@ export default function SmoothScrollProvider({ children }: { children: React.Rea
       }, 400);
     };
 
-    // After the intro, so this layout pass is outside the initial interaction window.
-    timerId = window.setTimeout(start, 7000);
+    if (typeof window.requestIdleCallback === 'function') {
+      idleId = window.requestIdleCallback(start, { timeout: 1200 });
+    } else {
+      timerId = window.setTimeout(start, 1);
+    }
 
     return () => {
       cancelled = true;
+      if (idleId) window.cancelIdleCallback(idleId);
       if (timerId) window.clearTimeout(timerId);
       aliveRef.current = false;
       gsap.ticker.remove(onRaf);
