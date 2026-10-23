@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { gsap } from '@/lib/gsap';
 import { usePathname } from 'next/navigation';
 import { useReducedMotion } from '@/lib/useReducedMotion';
+import { safeSessionStorage } from '@/utils/storage';
 
 export default function CustomCursor() {
   const cursorDotRef = useRef<HTMLDivElement>(null);
@@ -11,20 +12,33 @@ export default function CustomCursor() {
   const cursorTextRef = useRef<HTMLDivElement>(null);
   const [cursorText, setCursorText] = useState<string>('');
   const [enabled, setEnabled] = useState<boolean>(false);
+  const [ready, setReady] = useState<boolean>(false);
   const pathname = usePathname();
   const reduced = useReducedMotion();
   const mouse = useRef({ x: 0, y: 0 });
   const delayedMouse = useRef({ x: 0, y: 0 });
 
-  // Disable entirely on touch devices or when user prefers reduced motion
+  // Wait until the intro finishes, then enable on fine pointers only.
+  // State stays in this component so the rest of the page does not re-render.
   useEffect(() => {
+    const show = () => setReady(true);
+    if (safeSessionStorage.getItem('preloader-shown')) {
+      show();
+      return;
+    }
+    window.addEventListener('preloaderComplete', show);
+    return () => window.removeEventListener('preloaderComplete', show);
+  }, []);
+
+  useEffect(() => {
+    if (!ready) return;
     const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     if (isTouch || reduced) {
       setEnabled(false);
       return;
     }
     setEnabled(true);
-  }, [reduced]);
+  }, [ready, reduced]);
 
   useEffect(() => {
     if (!enabled) return;
