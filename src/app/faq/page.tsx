@@ -11,7 +11,7 @@ const faqs = [
   {
     num: '01',
     q: 'Who is this portfolio about?',
-    a: 'Roshan Shikhare, a Senior Software Engineer in Mumbai with 5+ years of experience. The current role is at Bajaj Finserv, on the IT, MarTech & GenAI technology team.',
+    a: 'Roshan Shikhare, a Senior Software Engineer in Mumbai with 6 years of experience. The current role is at Bajaj Finserv, on the IT, MarTech & GenAI technology team.',
   },
   {
     num: '02',

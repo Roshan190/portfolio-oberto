@@ -9,7 +9,7 @@ import { prefersReducedMotion } from '@/lib/site';
 const About = () => {
   const headingText = 'About';
   const descriptionText =
-    'Senior Software Engineer in Mumbai, with 5+ years building web applications.';
+    'Senior Software Engineer in Mumbai, with 6 years building web applications.';
   const bio =
     'Currently a Senior Software Engineer on Bajaj Finserv’s IT, MarTech & GenAI technology team. Previously a Senior Software Engineer at DEPT® in Mumbai, and a Software Engineer at Tekno Point in Mumbai.';
 

@@ -345,7 +345,7 @@ const HomeBanner = () => {
             <div ref={statsRef} className="mt-12 pt-8 border-t border-warm/15">
               <div className="grid grid-cols-3 gap-6 sm:gap-10">
                 {[
-                  { value: '5+', label: 'Years' },
+                  { value: '6', label: 'Years' },
                   { value: 'Mumbai', label: 'India' },
                   { value: 'B.Sc.', label: 'Computer Science' },
                 ].map(({ value, label }) => (
