@@ -80,7 +80,6 @@ const HomeBanner = () => {
   const sectionRef = useRef<HTMLDivElement>(null);
   const innerContentRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
-  const [preloaderComplete, setPreloaderComplete] = useState<boolean>(false);
   const { isReady } = useTransitionState();
   const reduced = useReducedMotion();
 
@@ -114,24 +113,15 @@ const HomeBanner = () => {
   }, [reduced]);
 
   useEffect(() => {
-    const hasShownPreloader = safeSessionStorage.getItem('preloader-shown');
-    if (hasShownPreloader) {
-      setPreloaderComplete(true);
-    } else {
-      const handler = () => setPreloaderComplete(true);
-      window.addEventListener('preloaderComplete', handler);
-      return () => window.removeEventListener('preloaderComplete', handler);
-    }
-  }, []);
+    if (!isReady) return;
 
-  useEffect(() => {
-    if (!preloaderComplete || !isReady) return;
-    if (reduced) {
-      gsap.set(sectionRef.current, { opacity: 1 });
-      return;
-    }
+    const play = () => {
+      if (reduced) {
+        gsap.set(sectionRef.current, { opacity: 1 });
+        return;
+      }
 
-    const timer = setTimeout(() => {
+      const timer = window.setTimeout(() => {
       gsap.to(sectionRef.current, { opacity: 1, duration: 0.3, ease: 'power2.out' });
       if (nameRef.current) {
         gsap.set(nameRef.current.querySelectorAll('.letter-original, .letter-duplicate'), { y: '0%' });
@@ -153,9 +143,21 @@ const HomeBanner = () => {
           tl.to(ref.current, { y: 0, opacity: 1, duration: 0.8 }, '-=0.4');
         }
       });
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [preloaderComplete, isReady, reduced]);
+      }, 100);
+      return () => window.clearTimeout(timer);
+    };
+
+    if (safeSessionStorage.getItem('preloader-shown')) return play();
+    let stop = () => {};
+    const handler = () => {
+      stop = play() || (() => {});
+    };
+    window.addEventListener('preloaderComplete', handler);
+    return () => {
+      window.removeEventListener('preloaderComplete', handler);
+      stop();
+    };
+  }, [isReady, reduced]);
 
   const handleMouseEnter = () => {
     if (reduced || !nameRef.current) return;

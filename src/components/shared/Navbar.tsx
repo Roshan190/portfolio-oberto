@@ -268,24 +268,12 @@ const Navbar: React.FC<NavbarProps> = ({ hamburgerOnly = false }) => {
   const logoRef = useRef<HTMLElement>(null);
   const linksContainerRef = useRef<HTMLUListElement>(null);
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
-  const [preloaderComplete, setPreloaderComplete] = useState<boolean>(false);
   const [hasAnimated, setHasAnimated] = useState<boolean>(false);
   const [shouldHideNav, setShouldHideNav] = useState<boolean>(false);
   const lenisRef = useLenis() as React.RefObject<Lenis | null> | null;
   const lenis = lenisRef?.current;
   const { stage, isReady } = useTransitionState();
   const isTransitioning = stage === 'entering' || stage === 'leaving';
-
-  useEffect(() => {
-    const hasShownPreloader = sessionStorage.getItem('preloader-shown');
-    if (hasShownPreloader) {
-      setPreloaderComplete(true);
-    } else {
-      const handler = () => setPreloaderComplete(true);
-      window.addEventListener('preloaderComplete', handler);
-      return () => window.removeEventListener('preloaderComplete', handler);
-    }
-  }, []);
 
   // Initial scroll position check — determines whether nav should hide on mount
   useEffect(() => {
@@ -348,28 +336,42 @@ const Navbar: React.FC<NavbarProps> = ({ hamburgerOnly = false }) => {
   // Entry animation after preloader + page transition
   useEffect(() => {
     if (hamburgerOnly) return;
-    if (!preloaderComplete || !isReady || isTransitioning) return;
+    if (!isReady || isTransitioning) return;
     if (hasAnimated) return;
-    if (shouldHideNav) {
-      setHasAnimated(true);
-      return;
-    }
 
-    const logo = logoRef.current;
-    const linksContainer = linksContainerRef.current;
+    const play = () => {
+      if (shouldHideNav) {
+        setHasAnimated(true);
+        return;
+      }
 
-    const timer = setTimeout(() => {
-      if (logo) {
-        gsap.to(logo, { x: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.3 });
-      }
-      if (linksContainer) {
-        const links = linksContainer.querySelectorAll('li');
-        gsap.to(links, { y: 0, opacity: 1, duration: 1, stagger: 0.3, ease: 'power2.out', delay: 0.5 });
-      }
-      setHasAnimated(true);
-    }, 100);
-    return () => clearTimeout(timer);
-  }, [preloaderComplete, isReady, hasAnimated, hamburgerOnly, isTransitioning, shouldHideNav]);
+      const logo = logoRef.current;
+      const linksContainer = linksContainerRef.current;
+
+      const timer = window.setTimeout(() => {
+        if (logo) {
+          gsap.to(logo, { x: 0, opacity: 1, duration: 0.6, ease: 'power2.out', delay: 0.3 });
+        }
+        if (linksContainer) {
+          const links = linksContainer.querySelectorAll('li');
+          gsap.to(links, { y: 0, opacity: 1, duration: 1, stagger: 0.3, ease: 'power2.out', delay: 0.5 });
+        }
+        setHasAnimated(true);
+      }, 100);
+      return () => window.clearTimeout(timer);
+    };
+
+    if (sessionStorage.getItem('preloader-shown')) return play();
+    let stop = () => {};
+    const handler = () => {
+      stop = play() || (() => {});
+    };
+    window.addEventListener('preloaderComplete', handler);
+    return () => {
+      window.removeEventListener('preloaderComplete', handler);
+      stop();
+    };
+  }, [isReady, hasAnimated, hamburgerOnly, isTransitioning, shouldHideNav]);
 
   // Scroll-triggered: slide nav up on scroll, show hamburger in about section
   useEffect(() => {
