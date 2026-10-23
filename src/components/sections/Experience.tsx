@@ -88,7 +88,7 @@ const Experience = () => {
                 (Roles)
               </span>
               <AnimateDescription
-                text="Senior Software Engineer with 6 years. Currently at Bajaj Finserv, previously at DEPT® and Tekno Point, both in Mumbai."
+                text="Senior Software Engineer with 5+ years. Currently at Bajaj Finserv, previously at DEPT® and Tekno Point, both in Mumbai."
                 className="max-w-2xl text-lg sm:text-xl md:text-2xl text-gray-soft font-sans leading-relaxed"
               />
             </div>

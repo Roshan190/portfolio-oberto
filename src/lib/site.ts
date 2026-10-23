@@ -11,7 +11,7 @@ export const profile = {
   country: 'IN',
   timezone: 'Asia/Kolkata',
   role: 'Senior Software Engineer',
-  years: '6',
+  years: '5+',
   headline:
     'Senior Frontend / Fullstack Engineer working with React, Next.js, and Node.js on enterprise and product web applications.',
   github: 'https://github.com/Roshan190',
