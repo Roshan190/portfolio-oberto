@@ -7,17 +7,15 @@
 
 import { gsap } from '@/lib/gsap';
 import { useEffect, useRef } from 'react';
-import dynamic from 'next/dynamic';
 import HomeBanner from '@/components/sections/HomeBanner';
+import Projects from '@/components/sections/Projects';
+import About from '@/components/sections/About';
+import MarqueeStrip from '@/components/sections/MarqueeStrip';
+import Contact from '@/components/sections/Contact';
+import Footer from '@/components/shared/Footer';
 import Navbar from '@/components/shared/Navbar';
+import Featured from '@/components/sections/Featured';
 import { prefersReducedMotion } from '@/lib/site';
-
-const About = dynamic(() => import('@/components/sections/About'));
-const Projects = dynamic(() => import('@/components/sections/Projects'));
-const Featured = dynamic(() => import('@/components/sections/Featured'));
-const MarqueeStrip = dynamic(() => import('@/components/sections/MarqueeStrip'));
-const Contact = dynamic(() => import('@/components/sections/Contact'));
-const Footer = dynamic(() => import('@/components/shared/Footer'));
 export default function Home() {
   const homeRef = useRef<HTMLDivElement>(null);
   const reuniteRef = useRef<HTMLDivElement>(null);
